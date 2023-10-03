@@ -1,0 +1,15 @@
+From: from@localhost
+To: to@localhost
+Subject: subject
+
+<#multipart>
+Hello from a plain text part.
+<#part type=text/html>
+<h1>Hello from a HTML part.</h1>
+<#/part>
+<#part filename=./flake.nix description="Hello from an attachment.">
+<#/multipart>
+
+> This is the original reply.
+> It should be folded.
+> Thanks,

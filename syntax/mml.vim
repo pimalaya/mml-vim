@@ -4,4 +4,8 @@ endif
 
 runtime! syntax/mail.vim
 
-let b:current_syntax = 'himalaya-email-writing'
+syntax match MmlPart /<#\/\?\(multi\)\?part.*>/
+
+highlight default link MmlPart Comment
+
+let b:current_syntax = 'mml'

@@ -1,5 +1,5 @@
 {
-  description = "Vim plugin for MML messages.";
+  description = "Vim plugin for email messages written in MML.";
 
   inputs = {
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -19,7 +19,6 @@
           customRC = ''
             syntax on
             filetype plugin on
-            packadd! mml
           '';
         in
         rec {
@@ -31,7 +30,7 @@
             buildInputs = with pkgs; [ mml ];
             postPatch = with pkgs; ''
               substituteInPlace plugin/mml.vim \
-                --replace "default_executable = 'mml'" "default_executable = '${mml}/bin/mml'"
+                --replace "mml_default_executable = 'mml'" "mml_default_executable = '${mml}/bin/mml'"
             '';
           };
 
@@ -39,7 +38,6 @@
           devShell = pkgs.mkShell {
             buildInputs = self.packages.${system}.default.buildInputs;
             nativeBuildInputs = with pkgs; [
-
               # Nix LSP + formatter
               rnix-lsp
               nixpkgs-fmt
@@ -48,16 +46,13 @@
               nodejs
               nodePackages.vim-language-server
 
-              # Lua LSP
-              lua52Packages.lua-lsp
-
               # Editors
               ((vim_configurable.override { }).customize {
                 name = "vim";
                 vimrcConfig = {
                   inherit customRC;
                   packages.myplugins = {
-                    opt = [ self.packages.${system}.default ];
+                    start = [ self.packages.${system}.default ];
                   };
                 };
               })
@@ -65,7 +60,7 @@
                 configure = {
                   inherit customRC;
                   packages.myPlugins = {
-                    opt = [ self.packages.${system}.default ];
+                    start = [ self.packages.${system}.default ];
                   };
                 };
               })
